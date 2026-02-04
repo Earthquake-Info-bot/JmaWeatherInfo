@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>気象情報ビューアー</title>
+<style>
+body {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  margin: 5px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#weather {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  white-space: pre-wrap;
+  margin: 0;
+  padding: 5px;
+}
+
+#statusBar {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+#status {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  font-size: 12px;
+}
+
+#controls {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  margin-bottom: 2px;
+}
+
+#regionSelect,
+#copyBtn,
+#helpBtn,
+#shareBtn,
+#closeHelpBtn {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  font-size: 12px;
+  padding: 2px 5px;
+  cursor: pointer;
+}
+
+/* ===== ヘルプモーダル ===== */
+#helpOverlay {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;              /* ← 初期は必ず非表示 */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#helpModal {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  background: #fff;
+  padding: 12px;
+  max-width: 400px;
+  width: 90%;
+  font-size: 13px;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+#helpModal h3 {
+  font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
+  margin-top: 0;
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<div id="statusBar">
+  <div id="status">読み込み中...</div>
+  <button id="helpBtn">ヘルプ</button>
+</div>
+
+<div id="controls">
+  <select id="regionSelect"></select>
+  <!--
+    <button id="copyBtn">コピー</button>
+  -->
+  <button id="shareBtn">共有</button>
+</div>
+
+<div id="helpOverlay">
+  <div id="helpModal">
+    <h3>気象情報ビューアー</h3>
+
+    <p>
+      このページでは、気象情報（全般気象情報、地方気象情報、府県気象情報）を閲覧できます。<br><br>
+
+      ＜特徴＞<br>
+      ・最後に見た地域の閲覧データを残し、次回以降すぐに閲覧可能です。<br>
+      　※個人情報の収集等は一切行っていません<br>
+      ・表示内容の転送が可能なため、家族や友人などにすぐに共有できます。<br><br>
+
+      ＜注意点＞<br>
+      ・GoogleAppsScriptを使用しているため、接続が不安定になる場合があります。<br>
+      ・不具合及び不明な点がある場合は、作成者（なふぃー）までご連絡ください。<br><br>
+
+      情報元　気象庁XML<br>
+      整　形　なふぃー
+      
+    </p>
+
+    <button id="closeHelpBtn" type="button">閉じる</button>
+  </div>
+</div>
+
+<pre id="weather">読み込み中...<br><br>読み込みに時間がかかる場合があります。</pre>
+
+<script>
+const outputEl = document.getElementById("weather");
+const statusEl = document.getElementById("status");
+const copyBtn = document.getElementById("copyBtn");
+const regionSelect = document.getElementById("regionSelect");
+
+let latestData = null;
+
+function isValid(value) {
+  return value !== undefined &&
+         value !== null &&
+         !(typeof value === "number" && isNaN(value)) &&
+         value !== "";
+}
+
+function formatReportTime(dateStr) {
+  const d = new Date(dateStr);
+  const month = String(d.getMonth() + 1).padStart(2, '0'); // ← 月（+1必須）
+  const dd = String(d.getDate()).padStart(2, '0');
+  const HH = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return `${month}月${dd}日${HH}:${mm}　気象庁発表`;
+}
+
+function renderRegion(region) {
+  const info = latestData[region];
+
+  // ① region自体が存在しない（取得失敗・JSON不正など）
+  if (!info) {
+    outputEl.textContent =
+      `データ取得失敗:【${region}】の気象情報を取得できませんでした。`;
+    return;
+  }
+
+  // ② セルが空（取得は成功しているが未発表）
+  if (
+    !isValid(info.title) &&
+    !isValid(info.headLineText) &&
+    !isValid(info.bodyText)
+  ) {
+    outputEl.textContent =
+      `気象情報収集中：【${region}】の気象情報を収集中です。気象庁により情報が発表までしばらくお待ちください。`;
+    return;
+  }
+
+  // ③ 正常表示
+  outputEl.textContent =
+    `🟩${info.title}🟩\n` +
+    `${formatReportTime(info.report)}\n\n` +
+    `${info.headLineText}\n\n` +
+    `${info.bodyText}\n\n` +
+    `出典：気象庁XML\nformatted by NAFY`;
+}
+
+async function updateWeather() {
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbySQgagfqixnbX1Tvgi4K28yM4v2XUdtR3BBn1kb-1wQS0hAKUz28IJaUqGeIY04-0LRw/exec");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+
+    const data = await res.json();
+    latestData = data;
+
+    regionSelect.innerHTML = "";
+
+    for (const region of Object.keys(data)) {
+      if (region === "title" || region === "update") continue;
+
+      const info = data[region];
+      if (!info?.type) continue;
+
+      let label =
+        info.type === "General" ? "[全般] 全般気象情報" :
+        info.type === "Local"   ? `[地方] ${region}` :
+        info.type === "Pref"    ? `[府県] ${region}` :
+        region;
+
+      const opt = document.createElement("option");
+      opt.value = region;
+      opt.textContent = label;
+      regionSelect.appendChild(opt);
+    }
+
+    const savedRegion = localStorage.getItem("selectedRegion");
+    const regionToShow =
+      savedRegion && latestData[savedRegion]
+        ? savedRegion
+        : regionSelect.options[0]?.value;
+
+    if (regionToShow) {
+      regionSelect.value = regionToShow;
+      renderRegion(regionToShow);
+    }
+
+    const d = new Date(data.update);
+    statusEl.textContent =
+      `最終更新: ${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ` +
+      `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+
+  } catch(e) {
+    outputEl.textContent =
+      "取得エラー: " + e.message +
+      "\n\n◆再読み込みするか、しばらく経ってから再度お試しください。◆";
+    statusEl.textContent = "更新失敗";
+  }
+}
+
+regionSelect.addEventListener("change", () => {
+  localStorage.setItem("selectedRegion", regionSelect.value);
+  renderRegion(regionSelect.value);
+});
+
+if (copyBtn) {
+  copyBtn.addEventListener("click", () => {
+    navigator.clipboard.writeText(outputEl.textContent).then(() => {
+      const t = copyBtn.textContent;
+      copyBtn.textContent = "コピー完了";
+      setTimeout(() => copyBtn.textContent = t, 1500);
+    });
+  });
+}
+
+/* ===== ヘルプ制御 ===== */
+const helpBtn = document.getElementById("helpBtn");
+const helpOverlay = document.getElementById("helpOverlay");
+const closeHelpBtn = document.getElementById("closeHelpBtn");
+
+helpBtn.addEventListener("click", () => {
+  helpOverlay.style.display = "flex";
+});
+
+closeHelpBtn.addEventListener("click", (e) => {
+  e.stopPropagation();          // ← 重要
+  helpOverlay.style.display = "none";
+});
+
+helpOverlay.addEventListener("click", (e) => {
+  if (e.target === helpOverlay) {
+    helpOverlay.style.display = "none";
+  }
+});
+
+const shareBtn = document.getElementById("shareBtn");
+
+shareBtn.addEventListener("click", async () => {
+  const text = outputEl.textContent;
+
+  if (!text) return;
+
+  // Web Share API 対応環境（スマホ・一部PC）
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "気象情報",
+        text: text
+      });
+    } catch (e) {
+      // ユーザーキャンセル時などは何もしない
+    }
+  } else {
+    // 非対応環境 → コピーにフォールバック
+    navigator.clipboard.writeText(text).then(() => {
+      alert("共有機能が未対応のため、本文をコピーしました。");
+    });
+  }
+});
+
+updateWeather();
+</script>
+
+</body>
+</html>
