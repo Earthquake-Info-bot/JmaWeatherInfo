@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>気象情報ビューアー</title>
+<title>気象情報ビューアーv1.1.2</title>
 <style>
 body {
   font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
@@ -175,7 +175,7 @@ function renderRegion(region) {
     `🟩${info.title}🟩\n` +
     `${formatReportTime(info.report)}\n\n` +
     `${info.headLineText}\n\n` +
-    `${info.bodyText}\n\n` +
+    `${info.bodyText ? info.bodyText + "\n\n" : ""}` +
     `出典：気象庁XML\nformatted by NAFY`;
 }
 
