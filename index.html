@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>気象情報ビューアーv1.1.2</title>
+<title>気象情報ビューアーv2.1.1</title>
 <style>
 body {
   font-family:"Yu Gothic","YuGothic","メイリオ",sans-serif;
@@ -87,7 +87,88 @@ body {
 </div>
 
 <div id="controls">
-  <select id="regionSelect"></select>
+  <select id="regionSelect">
+    <option value="全般気象情報">[全般] 全般</option>
+    
+    <option value="北海道地方気象情報">[地方] 北海道地方</option>
+    <option value="東北地方気象情報">[地方] 東北地方</option>
+    <option value="関東甲信地方気象情報">[地方] 関東甲信地方</option>
+    <option value="北陸地方気象情報">[地方] 北陸地方</option>
+    <option value="東海地方気象情報">[地方] 東海地方</option>
+    <option value="近畿地方気象情報">[地方] 近畿地方</option>
+    <option value="中国地方気象情報">[地方] 中国地方</option>
+    <option value="四国地方気象情報">[地方] 四国地方</option>
+    <option value="九州北部地方（山口県を含む）気象情報">[地方] 九州北部地方（山口県を含む）</option>
+    <option value="九州南部・奄美地方気象情報">[地方] 九州南部・奄美地方</option>
+    <option value="沖縄地方気象情報">[地方] 沖縄地方</option>
+    
+    <option value="石狩・空知・後志地方気象情報">[府県] 石狩・空知・後志地方</option>
+    <option value="宗谷地方気象情報">[府県] 宗谷地方</option>
+    <option value="上川・留萌地方気象情報">[府県] 上川・留萌地方</option>
+    <option value="網走・北見・紋別地方気象情報">[府県] 網走・北見・紋別地方</option>
+    <option value="十勝地方気象情報">[府県] 十勝地方</option>
+    <option value="釧路・根室地方気象情報">[府県] 釧路・根室地方</option>
+    <option value="胆振・日高地方気象情報">[府県] 胆振・日高地方</option>
+    <option value="渡島・檜山地方気象情報">[府県] 渡島・檜山地方</option>
+    
+    <option value="青森県気象情報">[府県] 青森県</option>
+    <option value="岩手県気象情報">[府県] 岩手県</option>
+    <option value="宮城県気象情報">[府県] 宮城県</option>
+    <option value="秋田県気象情報">[府県] 秋田県</option>
+    <option value="山形県気象情報">[府県] 山形県</option>
+    <option value="福島県気象情報">[府県] 福島県</option>
+    <option value="茨城県気象情報">[府県] 茨城県</option>
+    <option value="栃木県気象情報">[府県] 栃木県</option>
+    <option value="群馬県気象情報">[府県] 群馬県</option>
+    <option value="埼玉県気象情報">[府県] 埼玉県</option>
+    <option value="千葉県気象情報">[府県] 千葉県</option>
+    <option value="東京都気象情報">[府県] 東京都</option>
+    <option value="神奈川県気象情報">[府県] 神奈川県</option>
+    <option value="山梨県気象情報">[府県] 山梨県</option>
+    <option value="長野県気象情報">[府県] 長野県</option>
+    <option value="岐阜県気象情報">[府県] 岐阜県</option>
+    <option value="静岡県気象情報">[府県] 静岡県</option>
+    <option value="愛知県気象情報">[府県] 愛知県</option>
+    <option value="三重県気象情報">[府県] 三重県</option>
+    
+    <option value="新潟県気象情報">[府県] 新潟県</option>
+    <option value="富山県気象情報">[府県] 富山県</option>
+    <option value="石川県気象情報">[府県] 石川県</option>
+    <option value="福井県気象情報">[府県] 福井県</option>
+    
+    <option value="滋賀県気象情報">[府県] 滋賀県</option>
+    <option value="京都府気象情報">[府県] 京都府</option>
+    <option value="大阪府気象情報">[府県] 大阪府</option>
+    <option value="兵庫県気象情報">[府県] 兵庫県</option>
+    <option value="奈良県気象情報">[府県] 奈良県</option>
+    <option value="和歌山県気象情報">[府県] 和歌山県</option>
+    
+    <option value="鳥取県気象情報">[府県] 鳥取県</option>
+    <option value="島根県気象情報">[府県] 島根県</option>
+    <option value="岡山県気象情報">[府県] 岡山県</option>
+    <option value="広島県気象情報">[府県] 広島県</option>
+    
+    <option value="徳島県気象情報">[府県] 徳島県</option>
+    <option value="香川県気象情報">[府県] 香川県</option>
+    <option value="愛媛県気象情報">[府県] 愛媛県</option>
+    <option value="高知県気象情報">[府県] 高知県</option>
+    
+    <option value="山口県気象情報">[府県] 山口県</option>
+    <option value="福岡県気象情報">[府県] 福岡県</option>
+    <option value="佐賀県気象情報">[府県] 佐賀県</option>
+    <option value="長崎県気象情報">[府県] 長崎県</option>
+    <option value="熊本県気象情報">[府県] 熊本県</option>
+    <option value="大分県気象情報">[府県] 大分県</option>
+    <option value="宮崎県気象情報">[府県] 宮崎県</option>
+    
+    <option value="鹿児島県（奄美地方を除く）気象情報">[府県] 鹿児島県（奄美地方を除く）</option>
+    <option value="奄美地方（鹿児島県）気象情報">[府県] 奄美地方（鹿児島県）</option>
+    
+    <option value="沖縄本島地方気象情報">[府県] 沖縄本島地方</option>
+    <option value="大東島地方気象情報">[府県] 大東島地方</option>
+    <option value="宮古島地方気象情報">[府県] 宮古島地方</option>
+    <option value="八重山地方気象情報">[府県] 八重山地方</option>
+  </select>
   <!--
     <button id="copyBtn">コピー</button>
   -->
@@ -131,110 +212,74 @@ const statusEl = document.getElementById("status");
 const copyBtn = document.getElementById("copyBtn");
 const regionSelect = document.getElementById("regionSelect");
 
-let latestData = null;
-
-function isValid(value) {
-  return value !== undefined &&
-         value !== null &&
-         !(typeof value === "number" && isNaN(value)) &&
-         value !== "";
-}
-
 function formatReportTime(dateStr) {
   const d = new Date(dateStr);
-  const month = String(d.getMonth() + 1).padStart(2, '0'); // ← 月（+1必須）
+  const month = String(d.getMonth() + 1).padStart(2, '0');
   const dd = String(d.getDate()).padStart(2, '0');
   const HH = String(d.getHours()).padStart(2, '0');
   const mm = String(d.getMinutes()).padStart(2, '0');
+
   return `${month}月${dd}日${HH}:${mm}　気象庁発表`;
 }
 
-function renderRegion(region) {
-  const info = latestData[region];
-
-  // ① region自体が存在しない（取得失敗・JSON不正など）
-  if (!info) {
-    outputEl.textContent =
-      `データ取得失敗:【${region}】の気象情報を取得できませんでした。`;
-    return;
-  }
-
-  // ② セルが空（取得は成功しているが未発表）
-  if (
-    !isValid(info.title) &&
-    !isValid(info.headLineText) &&
-    !isValid(info.bodyText)
-  ) {
-    outputEl.textContent =
-      `気象情報収集中：【${region}】の気象情報を収集中です。気象庁により情報が発表までしばらくお待ちください。`;
-    return;
-  }
-
-  // ③ 正常表示
-  outputEl.textContent =
-    `🟩${info.title}🟩\n` +
-    `${formatReportTime(info.report)}\n\n` +
-    `${info.headLineText}\n\n` +
-    `${info.bodyText ? info.bodyText + "\n\n" : ""}` +
-    `出典：気象庁XML\nformatted by NAFY`;
-}
-
+/* ===== 気象情報取得 ===== */
 async function updateWeather() {
   try {
-    const res = await fetch("https://script.google.com/macros/s/AKfycbySQgagfqixnbX1Tvgi4K28yM4v2XUdtR3BBn1kb-1wQS0hAKUz28IJaUqGeIY04-0LRw/exec");
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    statusEl.textContent = "検索中...";
+
+    const selectedValue = regionSelect.value;
+
+    const res = await fetch(
+      "https://www.jma.go.jp/bosai/information/data/information.json"
+    );
+
+    if (!res.ok) {
+      throw new Error("information.json取得失敗");
+    }
 
     const data = await res.json();
-    latestData = data;
 
-    regionSelect.innerHTML = "";
+    // headTitle に value を含むものだけ抽出
+    const matched = data.filter(item =>
+      item.headTitle &&
+      item.headTitle.includes(selectedValue)
+    );
 
-    for (const region of Object.keys(data)) {
-      if (region === "title" || region === "update") continue;
-
-      const info = data[region];
-      if (!info?.type) continue;
-
-      let label =
-        info.type === "General" ? "[全般] 全般気象情報" :
-        info.type === "Local"   ? `[地方] ${region}` :
-        info.type === "Pref"    ? `[府県] ${region}` :
-        region;
-
-      const opt = document.createElement("option");
-      opt.value = region;
-      opt.textContent = label;
-      regionSelect.appendChild(opt);
+    // 見つからない
+    if (matched.length === 0) {
+      outputEl.textContent = "最新の気象情報はありません。";
+      statusEl.textContent = "未発表";
+      return;
     }
 
-    const savedRegion = localStorage.getItem("selectedRegion");
-    const regionToShow =
-      savedRegion && latestData[savedRegion]
-        ? savedRegion
-        : regionSelect.options[0]?.value;
+    // 一番下（最新）
+    const latest = matched[matched.length - 1];
 
-    if (regionToShow) {
-      regionSelect.value = regionToShow;
-      renderRegion(regionToShow);
-    }
+    console.log(latest);
 
-    const d = new Date(data.update);
-    statusEl.textContent =
-      `最終更新: ${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ` +
-      `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
-
-  } catch(e) {
     outputEl.textContent =
-      "取得エラー: " + e.message +
-      "\n\n◆再読み込みするか、しばらく経ってから再度お試しください。◆";
+      `情報を検出しました。\n\n${latest.headTitle}`;
+
+    statusEl.textContent = "読み込み中...";
+
+  } catch (e) {
+    console.error(e);
+
+    outputEl.textContent =
+      "取得エラーが発生しました。";
+
     statusEl.textContent = "更新失敗";
   }
 }
 
+/* ===== 地域変更 ===== */
 regionSelect.addEventListener("change", () => {
   localStorage.setItem("selectedRegion", regionSelect.value);
-  renderRegion(regionSelect.value);
+  updateWeather();
 });
+
+// 初回読み込み
+updateWeather();
 
 if (copyBtn) {
   copyBtn.addEventListener("click", () => {
@@ -245,54 +290,6 @@ if (copyBtn) {
     });
   });
 }
-
-/* ===== ヘルプ制御 ===== */
-const helpBtn = document.getElementById("helpBtn");
-const helpOverlay = document.getElementById("helpOverlay");
-const closeHelpBtn = document.getElementById("closeHelpBtn");
-
-helpBtn.addEventListener("click", () => {
-  helpOverlay.style.display = "flex";
-});
-
-closeHelpBtn.addEventListener("click", (e) => {
-  e.stopPropagation();          // ← 重要
-  helpOverlay.style.display = "none";
-});
-
-helpOverlay.addEventListener("click", (e) => {
-  if (e.target === helpOverlay) {
-    helpOverlay.style.display = "none";
-  }
-});
-
-const shareBtn = document.getElementById("shareBtn");
-
-shareBtn.addEventListener("click", async () => {
-  const text = outputEl.textContent;
-
-  if (!text) return;
-
-  // Web Share API 対応環境（スマホ・一部PC）
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "気象情報",
-        text: text
-      });
-    } catch (e) {
-      // ユーザーキャンセル時などは何もしない
-    }
-  } else {
-    // 非対応環境 → コピーにフォールバック
-    navigator.clipboard.writeText(text).then(() => {
-      alert("共有機能が未対応のため、本文をコピーしました。");
-    });
-  }
-});
-
-updateWeather();
-</script>
 
 </body>
 </html>
